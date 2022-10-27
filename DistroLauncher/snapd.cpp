@@ -45,10 +45,12 @@ namespace Oobe
 
     ScopeGuard<void(*)(void) noexcept> TempDisableSnapd()
     {
+        static std::wstring cmd = internal::TempDisableSnapdImpl(g_wslApi, DistributionInfo::Name);
+       
         // api is a global and command is moved into the lambda.
-        void(*func)(void) noexcept = []() noexcept {
+        void (*func)(void) noexcept = []() noexcept {
             [[maybe_unused]] DWORD unused;
-            Sudo::WslLaunchInteractive(internal::TempDisableSnapdImpl(g_wslApi, DistributionInfo::Name).c_str(), FALSE,
+            Sudo::WslLaunchInteractive(cmd.c_str(), FALSE,
                                        &unused);
         };
         return ScopeGuard(func);
