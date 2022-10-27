@@ -31,6 +31,11 @@ namespace Oobe
             static_assert(noexcept(callable()), "Callable must explicitely not throw exceptions.");
         }
 
+        ScopeGuard(OnScopeExit const& callable) : callable{callable}
+        {
+            static_assert(noexcept(callable()), "Callable must explicitely not throw exceptions.");
+        }
+
         ScopeGuard(ScopeGuard&& other) noexcept = default;
         ScopeGuard(ScopeGuard& other) = delete;
         ScopeGuard operator=(ScopeGuard& other) = delete;
@@ -54,13 +59,6 @@ namespace Oobe
 
     /// Checks and temporarily disables the correct version of snapd conflicting with the OOBE.
     /// Returns an object that runs the matching clean up command when the caller scope exits.
-    auto TempDisableSnapd(WslApiLoader& api, const std::wstring& distroName)
-    {
-        auto command = internal::TempDisableSnapdImpl(api, distroName);
-        // api is a global and command is moved into the lambda.
-        return ScopeGuard([&api, cmd = std::move(command)]() noexcept {
-            [[maybe_unused]] DWORD unused;
-            api.WslLaunchInteractive(cmd.c_str(), FALSE, &unused);
-        });
-    }
+    
+    ScopeGuard<void(*)(void) noexcept> TempDisableSnapd();
 }

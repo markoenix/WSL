@@ -78,7 +78,7 @@ namespace Oobe
             using namespace internal;
             wprintf(L"Unpacking is complete!\n");
             // any required clean-up action will be taken by this guard.
-            auto scopeGuard = TempDisableSnapd(g_wslApi, DistributionInfo::Name);
+            auto scopeGuard = TempDisableSnapd();
             HRESULT hr =
               std::visit(internal::overloaded{
                            [&](AutoInstall& option) { return impl_.do_autoinstall(option.autoInstallFile); },
@@ -114,7 +114,7 @@ namespace Oobe
         {
             if (isReconfig()) {
                 // any required clean-up action will be taken by this guard.
-                auto scopeGuard = TempDisableSnapd(g_wslApi, DistributionInfo::Name);
+                auto scopeGuard = TempDisableSnapd();
                 return impl_.do_reconfigure();
             }
 
