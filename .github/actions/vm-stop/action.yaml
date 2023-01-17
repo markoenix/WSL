@@ -15,13 +15,18 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: azure/login@v1
-      with:
-        creds: ${{ inputs.az_creds }}
+    # - uses: azure/login@v1
+    #   with:
+    #     creds: ${{ inputs.az_creds }}
+    # - name: Deallocate the Runner
+    #   shell: bash
+    #   run: |
+    #     az vm deallocate --name ${{ inputs.az_name }} --resource-group ${{ inputs.az_resource_group }}
     - name: Deallocate the Runner
       shell: bash
       run: |
-        az vm deallocate --name ${{ inputs.az_name }} --resource-group ${{ inputs.az_resource_group }}
+        echo "Done"
+
 
 branding:
   icon: 'arrow-down-circle'

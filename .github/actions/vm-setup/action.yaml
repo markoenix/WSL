@@ -24,13 +24,13 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: azure/login@v1
-      with:
-        creds: ${{ inputs.az_creds }}
-    - name: Start the Runner
-      shell: bash
-      run: |
-        az vm start --name ${{ inputs.az_name }} --resource-group ${{ inputs.az_resource_group }}
+    # - uses: azure/login@v1
+    #   with:
+    #     creds: ${{ inputs.az_creds }}
+    # - name: Start the Runner
+    #   shell: bash
+    #   run: |
+    #     az vm start --name ${{ inputs.az_name }} --resource-group ${{ inputs.az_resource_group }}
     - name: rdp
       shell: bash
       env:
